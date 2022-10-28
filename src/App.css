@@ -1,38 +1,57 @@
-.App {
-  text-align: center;
+.machine-container {
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+.heating-agent{
+  position: absolute;
+  width: 115px;
+  height: 4px;
+  border: 1.5px grey solid;
+  background-color: rgb(184, 181, 181);
+  bottom: 140px;
+  left: 292px;
+}
+.stamping-head {
+  position: absolute;
+  width: 22px;
+  height: 5px;
+  z-index: 2;
+  border: 2px rgb(99, 98, 98) solid;
+  background-color: rgb(184, 181, 181);
+  bottom: 127px;
+  left: 132px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.stamping-pipe {
+  position: absolute;
+  width: 4px;
+  height: 17px;
+  z-index: 2;
+  border: 2px rgb(99, 98, 98) solid;
+  background-color: rgb(184, 181, 181);
+  bottom: 134px;
+  left: 141px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#toast-container {
+  margin-top: 1rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#toast-container.toast-top-full-width>.toast {
+  max-width: 570px;
 }
 
-.App-link {
-  color: #61dafb;
+#toast-container>.toast-success {
+  background-color: #35c8c3;
+  opacity:1;
+  box-shadow:0px 0px 10px rgba(0,0,0,0.2);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#toast-container>.toast-success:hover {
+  background-color: #35c8c3;
+  opacity:1;
+  box-shadow:0px 0px 10px rgba(0,0,0,0.4);
 }
