@@ -70,6 +70,8 @@ function App() {
     });
 
     socket.on("COOKIES_MOVED", (value) => {
+      console.log(value.firstCookiePosition, value.lastCookiePosition);
+      
       setFirstCookiePosition(value.firstCookiePosition);
       setLastCookiePosition(value.lastCookiePosition);
     });

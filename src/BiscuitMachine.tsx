@@ -23,7 +23,7 @@ const BiscuitMachine = ({
     <>
       <div className="machine-container">
         <MachineBase></MachineBase>
-        {true ?? (
+        {(lastCookiePosition < 1 && firstCookiePosition > -1) ? (
           <>
             <img
               src="./cookie-dough.png"
@@ -41,7 +41,7 @@ const BiscuitMachine = ({
               }}
             />
           </>
-        )}
+        ) : null}
         <div className="stamping-head"></div>
         <div className="stamping-pipe"></div>
 
@@ -71,11 +71,11 @@ const BiscuitMachine = ({
           alt="cooked-cookie"
           style={{ position: "absolute", right: 79, bottom: 115, zIndex: -1 }}
         />: null}
-       {/* {(lastCookiePosition === 5 && firstCookiePosition) > 0 ??  <img
+       {(firstCookiePosition === 5 && lastCookiePosition > 0) ?  <img
           src="./falling-cookie.png"
           alt="falling-cookie"
           style={{ position: "absolute", right: 25, bottom: 80, zIndex: 1 }}
-        />} */}
+        />: null}
 
         <div className="heating-agent"></div>
       </div>
