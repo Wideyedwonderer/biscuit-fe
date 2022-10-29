@@ -1,0 +1,217 @@
+@import url(https://fonts.googleapis.com/css?family=Gloria+Hallelujah);
+
+.eyes {
+  position: absolute;
+  
+  left: calc(50% - 100px);
+  top: 40%;
+}
+
+.eye {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: white;
+  border: solid 7px black;
+}
+
+.eye:nth-child(1) {
+  -webkit-animation: eyes 2s infinite;
+  -moz-animation: eyes 2s infinite;
+  animation: eyes 2s infinite;
+}
+
+.eye:nth-child(2) {
+  -webkit-animation: eyes 2s infinite 0.1s;
+  -moz-animation: eyes 2s infinite 0.1s;
+  animation: eyes 2s infinite 0.1s;
+}
+
+.eye:before {
+  position: relative;
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 100%;
+  background-color: black;
+  top: 14px;
+  left: 9px;
+}
+
+.mouth {
+  margin-top: 25px;
+  height: 50px;
+  width: 150px;
+  background-color: rgba(200,50,50,0.9);
+  border-radius: 70% 50% 50% 70%;
+  border: solid 8px black;
+  transform: rotate(-10deg);
+  -webkit-animation: mouth 0.7s infinite;
+  -moz-animation: mouth 0.7s infinite;
+  animation: mouth 0.7s infinite;
+}
+
+.text {
+  white-space: nowrap;
+  font-size: 25px;
+  color: white;
+  font-family: 'Gloria Hallelujah', cursive;
+  opacity: 0;
+  -webkit-animation: speech 5s infinite;
+  -moz-animation: speech 5s infinite;
+  animation: speech 5s infinite;
+}
+
+.cookie {
+  position: relative;
+  top: -30px;
+  height: 50px;
+  width: 150px;
+  background-color: rgb(211, 142, 64);
+  border-radius: 100%;
+  box-shadow: 0 5px 0 black;
+  border: solid 2px black;
+  -webkit-animation: crunch 1.5s infinite;
+  -moz-animation: crunch 1.5s infinite;
+  animation: crunch 1.5s infinite;
+}
+
+.cookie:before {
+  content: "";
+  position: absolute;
+  display: block;
+  background-color: black;
+  border-radius: 100% 70%;
+  width: 15px;
+  height: 15px;
+  top: 20px;
+  left: 60%;
+}
+
+.cookie:after {
+  content: "";
+  position: absolute;
+  display: block;
+  background-color: black;
+  border-radius: 100% 70%;
+  width: 20px;
+  height: 20px;
+  top: 10px;
+  left: 15%;
+}
+
+@-webkit-keyframes eyes{
+  50% {
+    transform: rotate(560deg);
+  }
+}
+
+@-webkit-keyframes mouth{
+  50% {
+    border-radius: 90%;
+    height: 25px;
+  } 
+}
+
+@-webkit-keyframes speech {
+  90% {
+    margin-left: 300px;
+  } 95% {
+    margin-left: 275px;
+  } 100% { 
+    margin-left: 300px; 
+    opacity: 1; 
+  }
+}
+
+@-webkit-keyframes crunch {
+  from {
+    top: 0;
+    width: 50px;
+    left: -10px;
+    opacity: 0;
+  } to {
+    top: -30px;
+    left: 10px;
+    width: 150px;
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes eyes{
+  50% {
+    transform: rotate(560deg);
+  }
+}
+
+@-moz-keyframes mouth{
+  50% {
+    border-radius: 90%;
+    height: 25px;
+  } 
+}
+
+@-moz-keyframes speech {
+   90% {
+    margin-left: 300px;
+  } 95% {
+    margin-left: 275px;
+  } 100% { 
+    margin-left: 300px; 
+    opacity: 1; 
+  }
+}
+
+@-moz-keyframes crunch {
+  from {
+    top: 0;
+    width: 50px;
+    left: -10px;
+    opacity: 0;
+  } to {
+    top: -30px;
+    left: 10px;
+    width: 150px;
+    opacity: 1;
+  }
+}
+
+@keyframes eyes{
+  50% {
+    transform: rotate(560deg);
+  }
+}
+
+@keyframes mouth{
+  50% {
+    border-radius: 90%;
+    height: 25px;
+  } 
+}
+
+@keyframes speech {
+  90% {
+    margin-left: 300px;
+  } 95% {
+    margin-left: 275px;
+  } 100% { 
+    margin-left: 300px; 
+    opacity: 1; 
+  }
+}
+
+@keyframes crunch {
+  from {
+    top: 0;
+    width: 50px;
+    left: -10px;
+    opacity: 0;
+  } to {
+    top: -30px;
+    left: 10px;
+    width: 150px;
+    opacity: 1;
+  }
+}

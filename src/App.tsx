@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, MouseEventHandler } from "react";
 import io from "socket.io-client";
 import "./App.css";
-import BiscuitMachine from "./BiscuitMachine";
+import BiscuitMachine from "./components/BiscuitMachine";
 import toastr from "toastr";
-import "toastr/build/toastr.min.css"
+import "toastr/build/toastr.min.css";
+import CookieSpinner from "./components/CookieSpinner";
 
-if (
-  !process.env.REACT_APP_BISCUIT_WS_URL
-) {
-  throw new Error(
-    "Please configure env variable REACT_APP_BISCUIT_WS_URL"
-  );
+if (!process.env.REACT_APP_BISCUIT_WS_URL) {
+  throw new Error("Please configure env variable REACT_APP_BISCUIT_WS_URL");
 }
-;
+console.log(process.env.REACT_APP_BISCUIT_WS_URL);
+
 const socket = io(process.env.REACT_APP_BISCUIT_WS_URL);
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -26,7 +24,6 @@ function App() {
   const [lastCookiePosition, setLastCookiePosition] = useState(-1);
 
   useEffect(() => {
-    console.log(111111111)
     socket.on("connect", () => {
       setIsConnected(true);
     });
@@ -48,15 +45,15 @@ function App() {
     });
 
     socket.on("MACHINE_ON", (value) => {
-      if(value){
-        toastr.success('Biscuit machine is running.');
+      if (value) {
+        toastr.success("Biscuit machine is running.");
       }
       setMachineOn(value);
     });
 
     socket.on("MACHINE_PAUSED", (value) => {
-      if(value) {
-        toastr.success('Biscuit machine paused.');
+      if (value) {
+        toastr.success("Biscuit machine paused.");
       }
       setMachinePaused(value);
     });
@@ -69,7 +66,7 @@ function App() {
       toastr.error(value);
     });
 
-    socket.on("COOKIES_MOVED", (value) => {      
+    socket.on("COOKIES_MOVED", (value) => {
       setFirstCookiePosition(value.firstCookiePosition);
       setLastCookiePosition(value.lastCookiePosition);
     });
@@ -89,9 +86,23 @@ function App() {
     };
   }, []);
 
+  const machineOnHandler: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    socket.emit("TURN_ON_MACHINE");
+  };
+  const machinePauseHandler: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    socket.emit("PAUSE_MACHINE");
+  };
+
+  const machineOffHandler: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    socket.emit("TURN_OFF_MACHINE");
+  };
   return (
-    <div>
-      <BiscuitMachine
+    <div >
+      {
+        isConnected ?  <BiscuitMachine
         ovenTemperature={ovenTemperature}
         ovenHeated={ovenHeated}
         motorOn={motorOn}
@@ -100,18 +111,12 @@ function App() {
         cookedCookiesAmount={cookedCookiesAmount}
         firstCookiePosition={firstCookiePosition}
         lastCookiePosition={lastCookiePosition}
-      />
-
-      <p>Connected: {"" + isConnected}</p>
-      <p>Oven temperature: {ovenTemperature || "-"}</p>
-      <p>Motor ON: {motorOn ? "TRUE" : "FALSE"}</p>
-      <p>Oven HEATED: {ovenHeated ? "TRUE" : "FALSE"}</p>
-      <p>Machine ON: {machineOn ? "TRUE" : "FALSE"}</p>
-      <p>Machine PAUSED: {machinePaused ? "TRUE" : "FALSE"}</p>
-
-      <button onClick={() => socket.emit("TURN_ON_MACHINE")}>ON</button>
-      <button onClick={() => socket.emit("TURN_OFF_MACHINE")}>OFF</button>
-      <button onClick={() => socket.emit("PAUSE_MACHINE")}>PAUSE</button>
+        onMachineOnClick={machineOnHandler}
+        onMachineOffClick={machineOffHandler}
+        onMachinePauseClick={machinePauseHandler}
+      /> : <CookieSpinner/>
+      }
+     
     </div>
   );
 }

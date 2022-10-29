@@ -1,0 +1,78 @@
+.machine-container {
+    position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  
+  }
+  .stamping-head {
+    position: absolute;
+    width: 22px;
+    height: 5px;
+    z-index: 2;
+    border: 2px rgb(99, 98, 98) solid;
+    background-color: rgb(184, 181, 181);
+    bottom: 127px;
+    left: 132px;
+  }
+  
+  .stamping-pipe {
+    position: absolute;
+    width: 4px;
+    height: 17px;
+    z-index: 2;
+    border: 2px rgb(99, 98, 98) solid;
+    background-color: rgb(184, 181, 181);
+    bottom: 134px;
+    left: 141px;
+  }
+  .heating-agent{
+    position: absolute;
+    width: 115px;
+    height: 4px;
+    border: 1.5px grey solid;
+    bottom: 140px;
+    left: 292px;
+  }
+  .oven-temperature {
+    position: absolute;
+    left: 292px;
+    bottom: 155px;
+    font-size: large;
+  }
+  .total-cookies {
+    position: absolute;
+    font-size: large;
+    bottom: 65px;
+    left: 550px;
+
+  }
+  .btn-group { 
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
+  .btn-group button {
+    background-color: rgb(184, 181, 181); /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+  }
+  
+  .btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+  }
+  
+  /* Clear floats (clearfix hack) */
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  /* Add a background color on hover */
+  .btn-group button:hover {
+    background-color: #3e8e41;
+  }

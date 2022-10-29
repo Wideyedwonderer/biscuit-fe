@@ -1,40 +1,4 @@
-.machine-container {
-  position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 
-}
-.heating-agent{
-  position: absolute;
-  width: 115px;
-  height: 4px;
-  border: 1.5px grey solid;
-  background-color: rgb(184, 181, 181);
-  bottom: 140px;
-  left: 292px;
-}
-.stamping-head {
-  position: absolute;
-  width: 22px;
-  height: 5px;
-  z-index: 2;
-  border: 2px rgb(99, 98, 98) solid;
-  background-color: rgb(184, 181, 181);
-  bottom: 127px;
-  left: 132px;
-}
-
-.stamping-pipe {
-  position: absolute;
-  width: 4px;
-  height: 17px;
-  z-index: 2;
-  border: 2px rgb(99, 98, 98) solid;
-  background-color: rgb(184, 181, 181);
-  bottom: 134px;
-  left: 141px;
-}
 
 #toast-container {
   margin-top: 1rem;
