@@ -10,7 +10,7 @@ In the project directory, please run:
 
 Provide ``.env`` file with ``REACT_APP_BISCUIT_WS_URL`` variable. Check ``.envExample`` for the right format and the default value.
 
-## Available Scripts
+## To start
 
 In the project directory, you can run:
 
