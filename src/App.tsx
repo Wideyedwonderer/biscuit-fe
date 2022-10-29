@@ -4,12 +4,12 @@ import "./App.css";
 import BiscuitMachine from "./BiscuitMachine";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css"
-// TODO: improve
+
 if (
   !process.env.REACT_APP_BISCUIT_WS_URL
 ) {
   throw new Error(
-    "Please configure env variable BISCUIT_WS_URL"
+    "Please configure env variable REACT_APP_BISCUIT_WS_URL"
   );
 }
 ;
@@ -69,9 +69,7 @@ function App() {
       toastr.error(value);
     });
 
-    socket.on("COOKIES_MOVED", (value) => {
-      console.log(value.firstCookiePosition, value.lastCookiePosition);
-      
+    socket.on("COOKIES_MOVED", (value) => {      
       setFirstCookiePosition(value.firstCookiePosition);
       setLastCookiePosition(value.lastCookiePosition);
     });
