@@ -7,15 +7,7 @@
       height: 215px;
   
   }
-  .conveyor {
-    width: 460px;
-    height: 5px;
-    background-color: gray;
-    border: 2px rgb(99, 98, 98) solid;
-    position: absolute;
-    bottom: 113px;
-    left: 35px
-  }
+
   .stamping-head {
     position: absolute;
     width: 22px;
@@ -39,11 +31,9 @@
   }
   .heating-agent{
     position: absolute;
-    width: 115px;
     height: 4px;
     border: 1.5px grey solid;
-    bottom: 140px;
-    left: 292px;
+    bottom: 144px;
   }
   .oven-temperature {
     position: absolute;
