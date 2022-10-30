@@ -30,13 +30,30 @@ const BiscuitMachine = ({
   return (
     <>
       <div className="machine-container">
-        <MachineBase></MachineBase>
+            {/* Static */}
+           <img
+              src="./oven.png"
+              alt="cookie"
+              style={{ position: "absolute", right: 100, bottom: 104, width: 200 }}
+            />
+             <img
+              src="./extruder-stamper.png"
+              alt="cookie"
+              style={{ position: "absolute", left: 32, bottom: 154, width: 144 }}
+            />
+             <img
+              src="./biscuit-container.png"
+              alt="cookie"
+              style={{ position: "absolute", right: -8, bottom: 46, width: 56, zIndex: 1 }}
+            />
+            <div className="conveyor"></div>
+            {/* Dynamic */}
         {lastCookiePosition < 1 && firstCookiePosition > -1 ? (
           <>
             <img
               src="./cookie-dough.png"
               alt="cookie"
-              style={{ position: "absolute", right: 479, bottom: 122 }}
+              style={{ position: "absolute", right: 480, bottom: 122 }}
             />
             <img
               src="./cookie-dough-falling.png"
@@ -71,7 +88,7 @@ const BiscuitMachine = ({
             alt="cookie"
             style={{
               position: "absolute",
-              right: 305,
+              right: 306,
               bottom: 115,
               zIndex: -1,
             }}
@@ -83,7 +100,7 @@ const BiscuitMachine = ({
             alt="cooked-cookie"
             style={{
               position: "absolute",
-              right: 217,
+              right: 226,
               bottom: 115,
               zIndex: -1,
             }}
@@ -95,7 +112,7 @@ const BiscuitMachine = ({
             alt="cooked-cookie"
             style={{
               position: "absolute",
-              right: 147,
+              right: 146,
               bottom: 115,
               zIndex: -1,
             }}
@@ -105,7 +122,7 @@ const BiscuitMachine = ({
           <img
             src="./cooked-cookie.png"
             alt="cooked-cookie"
-            style={{ position: "absolute", right: 79, bottom: 115, zIndex: -1 }}
+            style={{ position: "absolute", right: 66, bottom: 115, zIndex: -1 }}
           />
         ) : null}
         {firstCookiePosition === 5 &&
@@ -114,7 +131,7 @@ const BiscuitMachine = ({
           <img
             src="./falling-cookie.png"
             alt="falling-cookie"
-            style={{ position: "absolute", right: 25, bottom: 80, zIndex: 1 }}
+            style={{ position: "absolute", right: 6, bottom: 80, zIndex: 1 }}
           />
         ) : null}
 
@@ -122,28 +139,28 @@ const BiscuitMachine = ({
           <img
             src="./cooked-cookie.png"
             alt="cooked-cookie"
-            style={{ position: "absolute", right: 12, bottom: 55, zIndex: -1 }}
+            style={{ position: "absolute", right: -6, bottom: 55, zIndex: -1 }}
           />
         ) : null}
         {cookedCookiesAmount > 1 ? (
           <img
             src="./cooked-cookie.png"
             alt="cooked-cookie"
-            style={{ position: "absolute", right: 12, bottom: 60, zIndex: -1 }}
+            style={{ position: "absolute", right: -6, bottom: 60, zIndex: -1 }}
           />
         ) : null}
         {cookedCookiesAmount > 2 ? (
           <img
             src="./cooked-cookie.png"
             alt="cooked-cookie"
-            style={{ position: "absolute", right: 12, bottom: 60, zIndex: -1 }}
+            style={{ position: "absolute", right: -6  , bottom: 60, zIndex: -1 }}
           />
         ) : null}
         {cookedCookiesAmount > 4 ? (
           <img
             src="./cooked-cookie.png"
             alt="cooked-cookie"
-            style={{ position: "absolute", right: 12, bottom: 65, zIndex: -1 }}
+            style={{ position: "absolute", right: -6, bottom: 65, zIndex: -1 }}
           />
         ) : null}
         <div

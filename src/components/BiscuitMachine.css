@@ -3,7 +3,18 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      width: 560px;
+      height: 215px;
   
+  }
+  .conveyor {
+    width: 460px;
+    height: 5px;
+    background-color: gray;
+    border: 2px rgb(99, 98, 98) solid;
+    position: absolute;
+    bottom: 113px;
+    left: 35px
   }
   .stamping-head {
     position: absolute;
@@ -13,18 +24,18 @@
     border: 2px rgb(99, 98, 98) solid;
     background-color: rgb(184, 181, 181);
     bottom: 127px;
-    left: 132px;
+    left: 137px;
   }
   
   .stamping-pipe {
     position: absolute;
     width: 4px;
-    height: 17px;
+    height: 19px;
     z-index: 2;
     border: 2px rgb(99, 98, 98) solid;
     background-color: rgb(184, 181, 181);
     bottom: 134px;
-    left: 141px;
+    left: 145px;
   }
   .heating-agent{
     position: absolute;
@@ -37,15 +48,14 @@
   .oven-temperature {
     position: absolute;
     left: 292px;
-    bottom: 155px;
+    bottom: 160px;
     font-size: large;
   }
   .total-cookies {
     position: absolute;
     font-size: large;
     bottom: 65px;
-    left: 550px;
-
+    left: 570px;
   }
   .btn-group { 
     position: absolute;

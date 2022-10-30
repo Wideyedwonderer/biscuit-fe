@@ -9,9 +9,8 @@ import CookieSpinner from "./components/CookieSpinner";
 if (!process.env.REACT_APP_BISCUIT_WS_URL) {
   throw new Error("Please configure env variable REACT_APP_BISCUIT_WS_URL");
 }
-console.log(process.env.REACT_APP_BISCUIT_WS_URL);
 
-const socket = io(process.env.REACT_APP_BISCUIT_WS_URL);
+let socket = io(process.env.REACT_APP_BISCUIT_WS_URL);
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [ovenTemperature, setOvenTemperature] = useState(0);
@@ -24,6 +23,7 @@ function App() {
   const [lastCookiePosition, setLastCookiePosition] = useState(-1);
 
   useEffect(() => {
+    socket.on("error", (e) => console.log(99999, e));
     socket.on("connect", () => {
       setIsConnected(true);
     });
@@ -43,7 +43,11 @@ function App() {
     socket.on("MOTOR_ON", (value) => {
       setMotorOn(value);
     });
-
+    socket.on("connect_error", (e) =>
+      toastr.error(
+        "Server connection error, please check Readme if problem persists."
+      )
+    );
     socket.on("MACHINE_ON", (value) => {
       if (value) {
         toastr.success("Biscuit machine is running.");
@@ -72,17 +76,7 @@ function App() {
     });
 
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("pong");
-      socket.off("ERROR");
-      socket.off("COOKIES_MOVED");
-      socket.off("COOKIE_COOKED");
-      socket.off("MACHINE_PAUSED");
-      socket.off("MACHINE_ON");
-      socket.off("MOTOR_ON");
-      socket.off("OVEN_HEATED");
-      socket.off("OVEN_TEMPERATURE_CNAHGE");
+      socket.removeAllListeners();
     };
   }, []);
 
@@ -99,24 +93,45 @@ function App() {
     e.stopPropagation();
     socket.emit("TURN_OFF_MACHINE");
   };
+
+  // const errorHandler = (handler: any) => {
+  //   const handleError = (err: string) => {
+  //     console.error("please handle me", err);
+  //   };
+
+  //   return (...args: any[]) => {
+  //     try {
+  //       //@ts-ignore
+  //       const ret = handler.apply(this, args);
+  //       if (ret && typeof ret.catch === "function") {
+  //         // async handler
+  //         ret.catch(handleError);
+  //       }
+  //     } catch (e: any) {
+  //       // sync handler
+  //       handleError(e);
+  //     }
+  //   };
+  // };
   return (
-    <div >
-      {
-        isConnected ?  <BiscuitMachine
-        ovenTemperature={ovenTemperature}
-        ovenHeated={ovenHeated}
-        motorOn={motorOn}
-        machineOn={machineOn}
-        machinePaused={machinePaused}
-        cookedCookiesAmount={cookedCookiesAmount}
-        firstCookiePosition={firstCookiePosition}
-        lastCookiePosition={lastCookiePosition}
-        onMachineOnClick={machineOnHandler}
-        onMachineOffClick={machineOffHandler}
-        onMachinePauseClick={machinePauseHandler}
-      /> : <CookieSpinner/>
-      }
-     
+    <div>
+      {isConnected ? (
+        <BiscuitMachine
+          ovenTemperature={ovenTemperature}
+          ovenHeated={ovenHeated}
+          motorOn={motorOn}
+          machineOn={machineOn}
+          machinePaused={machinePaused}
+          cookedCookiesAmount={cookedCookiesAmount}
+          firstCookiePosition={firstCookiePosition}
+          lastCookiePosition={lastCookiePosition}
+          onMachineOnClick={machineOnHandler}
+          onMachineOffClick={machineOffHandler}
+          onMachinePauseClick={machinePauseHandler}
+        />
+      ) : (
+        <CookieSpinner />
+      )}
     </div>
   );
 }
