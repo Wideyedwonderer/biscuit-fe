@@ -2,6 +2,9 @@
 
 This project is dependant on having a running version of the Biscuit Machine WS Server: https://github.com/Wideyedwonderer/buscuit-maker.
 
+The Biscuit Machine FE makes a few assumptions about the Machine. Conveyor length is assumed to be 6, oven length - 2 and oven position - 4.
+
+
 ## Before you start
 
 In the project directory, please run:
