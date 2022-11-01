@@ -2,7 +2,8 @@ import "./CookieSpinner.css";
 
 const CookieSpinner = () => {
   return (
-    <div className="eyes">
+    <div 
+    className="eyes">
       <div className="eye"></div>
       <div className="eye"></div>
       <div className="mouth">

@@ -5,12 +5,22 @@ import BiscuitMachine from "./components/BiscuitMachine";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import CookieSpinner from "./components/CookieSpinner";
+import {
+  BiscuitMachineEvents,
+  BuscuitMachineEventPayloadTypes,
+} from 'biscuit-machine-commons';
 
 if (!process.env.REACT_APP_BISCUIT_WS_URL) {
   throw new Error("Please configure env variable REACT_APP_BISCUIT_WS_URL");
 }
 
 let socket = io(process.env.REACT_APP_BISCUIT_WS_URL);
+const subscribeToEvent = <T extends BiscuitMachineEvents | 'connect' | 'disconnect' | 'connect_error'>(
+  event: T,
+  callback:  T extends BiscuitMachineEvents ? (value: BuscuitMachineEventPayloadTypes[T]) => void : (...args: any[]) => void,
+) => {
+  socket.on<T>(event, callback as any);
+}
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [ovenTemperature, setOvenTemperature] = useState(0);
@@ -21,58 +31,74 @@ function App() {
   const [cookedCookiesAmount, setCookedCookiesAmount] = useState(0);
   const [firstCookiePosition, setFirstCookiePosition] = useState(-1);
   const [lastCookiePosition, setLastCookiePosition] = useState(-1);
+  const [conveyorLength, setConveyorLength] = useState(-1);
+  const [ovenLength, setOvenLength] = useState(-1);
+  const [ovenStartPosition, setOvenStartPosition] = useState(-1);
 
   useEffect(() => {
-    socket.on("error", (e) => console.log(99999, e));
-    socket.on("connect", () => {
+    subscribeToEvent("connect", () => {
       setIsConnected(true);
     });
 
-    socket.on("disconnect", () => {
+    subscribeToEvent("disconnect", () => {
       setIsConnected(false);
     });
 
-    socket.on("OVEN_TEMPERATURE_CHANGE", (value) => {
-      setOvenTemperature(value);
-    });
-
-    socket.on("OVEN_HEATED", (value) => {
-      setOvenHeated(value);
-    });
-
-    socket.on("MOTOR_ON", (value) => {
-      setMotorOn(value);
-    });
-    socket.on("connect_error", (e) =>
+    subscribeToEvent("connect_error", (e) =>
       toastr.error(
         "Server connection error, please check Readme if problem persists."
       )
     );
-    socket.on("MACHINE_ON", (value) => {
+
+    subscribeToEvent(BiscuitMachineEvents.OVEN_TEMPERATURE_CHANGE, (value) => {
+      setOvenTemperature(value);
+    });
+
+    subscribeToEvent(BiscuitMachineEvents.OVEN_HEATED, (value) => {
+      setOvenHeated(value);
+    });
+
+    subscribeToEvent(BiscuitMachineEvents.MOTOR_ON, (value) => {
+      setMotorOn(value);
+    });
+
+    subscribeToEvent(BiscuitMachineEvents.MACHINE_ON, (value) => {
       if (value) {
         toastr.success("Biscuit machine is running.");
       }
       setMachineOn(value);
     });
 
-    socket.on("MACHINE_PAUSED", (value) => {
+    subscribeToEvent(BiscuitMachineEvents.INITIAL_CONFIG,({conveyorLength, ovenLength, ovenPosition}) => {
+      setConveyorLength(conveyorLength);
+      setOvenLength(ovenLength);
+      setOvenStartPosition(ovenPosition);
+    });
+
+    subscribeToEvent(BiscuitMachineEvents.MACHINE_PAUSED, (value) => {
       if (value) {
         toastr.success("Biscuit machine paused.");
       }
       setMachinePaused(value);
     });
 
-    socket.on("COOKIE_COOKED", (value) => {
+    subscribeToEvent(BiscuitMachineEvents.COOKIE_COOKED, (value) => {
       setCookedCookiesAmount(value);
     });
 
-    socket.on("ERROR", (value) => {
+    subscribeToEvent(BiscuitMachineEvents.ERROR, (value) => {
       toastr.error(value);
     });
 
-    socket.on("COOKIES_MOVED", (value) => {
+    subscribeToEvent(BiscuitMachineEvents.WARNING, (value) => {
+      toastr.warning(value);
+    });
+
+    subscribeToEvent(BiscuitMachineEvents.COOKIES_MOVED, (value) => {
       setFirstCookiePosition(value.firstCookiePosition);
       setLastCookiePosition(value.lastCookiePosition);
+      console.log('all cooiies', value.lastCookiePosition, value.firstCookiePosition)
+      console.log('burned', value.lastBurnedCookiePosition, value.firstBurnedCookiePosition)
     });
 
     return () => {
@@ -82,40 +108,21 @@ function App() {
 
   const machineOnHandler: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
-    socket.emit("TURN_ON_MACHINE");
+    socket.emit(BiscuitMachineEvents.TURN_ON_MACHINE);
   };
   const machinePauseHandler: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
-    socket.emit("PAUSE_MACHINE");
+    socket.emit(BiscuitMachineEvents.PAUSE_MACHINE);
   };
 
   const machineOffHandler: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
-    socket.emit("TURN_OFF_MACHINE");
+    socket.emit(BiscuitMachineEvents.TURN_OFF_MACHINE);
   };
 
-  // const errorHandler = (handler: any) => {
-  //   const handleError = (err: string) => {
-  //     console.error("please handle me", err);
-  //   };
-
-  //   return (...args: any[]) => {
-  //     try {
-  //       //@ts-ignore
-  //       const ret = handler.apply(this, args);
-  //       if (ret && typeof ret.catch === "function") {
-  //         // async handler
-  //         ret.catch(handleError);
-  //       }
-  //     } catch (e: any) {
-  //       // sync handler
-  //       handleError(e);
-  //     }
-  //   };
-  // };
   return (
     <div>
-      {isConnected ? (
+      {isConnected && conveyorLength > 0 ? (
         <BiscuitMachine
           ovenTemperature={ovenTemperature}
           ovenHeated={ovenHeated}
@@ -128,6 +135,9 @@ function App() {
           onMachineOnClick={machineOnHandler}
           onMachineOffClick={machineOffHandler}
           onMachinePauseClick={machinePauseHandler}
+          conveyorLength={conveyorLength}
+          ovenLength={ovenLength}
+          ovenPosition={ovenStartPosition}
         />
       ) : (
         <CookieSpinner />

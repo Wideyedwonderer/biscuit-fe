@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from "react";
-import { ReactComponent as MachineBase } from "../aseets/base.svg";
+
 import "./BiscuitMachine.css";
 
 const BiscuitMachine = ({
@@ -14,6 +14,9 @@ const BiscuitMachine = ({
   onMachineOnClick,
   onMachineOffClick,
   onMachinePauseClick,
+  conveyorLength, 
+  ovenLength,
+  ovenPosition,
 }: {
   ovenTemperature: number;
   ovenHeated: boolean;
@@ -26,11 +29,12 @@ const BiscuitMachine = ({
   onMachineOnClick: MouseEventHandler<HTMLButtonElement>;
   onMachineOffClick: MouseEventHandler<HTMLButtonElement>;
   onMachinePauseClick: MouseEventHandler<HTMLButtonElement>;
+  conveyorLength: number; 
+  ovenLength: number;
+  ovenPosition: number;
 }) => {
   const cookieDistance = 80;
-  const conveyorLength = 6;
-  const ovenLength = 2;
-  const ovenPosition = 4;
+
 
   return (
     <>
