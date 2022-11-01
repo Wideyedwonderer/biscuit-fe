@@ -31,6 +31,8 @@ function App() {
   const [cookedCookiesAmount, setCookedCookiesAmount] = useState(0);
   const [firstCookiePosition, setFirstCookiePosition] = useState(-1);
   const [lastCookiePosition, setLastCookiePosition] = useState(-1);
+  const [firstCookieBurnedPosition, setFirstCookieBurnedPosition] = useState(-1);
+  const [lastCookieBurnedPosition, setLastCookieBurnedPosition] = useState(-1);
   const [conveyorLength, setConveyorLength] = useState(-1);
   const [ovenLength, setOvenLength] = useState(-1);
   const [ovenStartPosition, setOvenStartPosition] = useState(-1);
@@ -97,8 +99,8 @@ function App() {
     subscribeToEvent(BiscuitMachineEvents.COOKIES_MOVED, (value) => {
       setFirstCookiePosition(value.firstCookiePosition);
       setLastCookiePosition(value.lastCookiePosition);
-      console.log('all cooiies', value.lastCookiePosition, value.firstCookiePosition)
-      console.log('burned', value.lastBurnedCookiePosition, value.firstBurnedCookiePosition)
+      setFirstCookieBurnedPosition(value.firstBurnedCookiePosition)
+      setLastCookieBurnedPosition(value.lastBurnedCookiePosition)
     });
 
     return () => {
@@ -132,6 +134,8 @@ function App() {
           cookedCookiesAmount={cookedCookiesAmount}
           firstCookiePosition={firstCookiePosition}
           lastCookiePosition={lastCookiePosition}
+          firstBurnedCookiePosition={firstCookieBurnedPosition}
+          lastBurnedCookiePosition={lastCookieBurnedPosition}
           onMachineOnClick={machineOnHandler}
           onMachineOffClick={machineOffHandler}
           onMachinePauseClick={machinePauseHandler}
