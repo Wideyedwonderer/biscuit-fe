@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import "./BiscuitMachine.css";
 import ControlButtons from "./components/ControlButtons";
 import CookiesList from "./components/CookiesList";
@@ -38,25 +38,18 @@ const BiscuitMachine = ({
 }) => {
   const cookieDistance = 80;
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const prevLastCookiePosition = useRef();
 
   useEffect(() => {
     if (machineOn && lastCookiePosition < 2) {
       if (
-        prevLastCookiePosition.current !== undefined &&
-        lastCookiePosition === 0
+        lastCookiePosition === 1
       ) {
         setShouldAnimate(true);
       }
     } else {
       setShouldAnimate(false);
-      prevLastCookiePosition.current = undefined;
     }
 
-    if (lastCookiePosition === 0) {
-      //@ts-ignore
-      prevLastCookiePosition.current = lastCookiePosition;
-    }
   }, [lastCookiePosition, machineOn, machinePaused]);
 
   const fallingDough: React.CSSProperties = shouldAnimate
