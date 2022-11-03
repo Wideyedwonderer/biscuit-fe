@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { ReactComponent as Cookie } from "./cookie.svg";
 import "./BiscuitMachine.css";
 
@@ -19,6 +19,7 @@ const BiscuitMachine = ({
   ovenPosition,
   firstBurnedCookiePosition,
   lastBurnedCookiePosition,
+  motorPulseDurationSeconds
 }: {
   ovenTemperature: number;
   ovenHeated: boolean;
@@ -36,8 +37,31 @@ const BiscuitMachine = ({
   conveyorLength: number;
   ovenLength: number;
   ovenPosition: number;
+  motorPulseDurationSeconds: number;
 }) => {
   const cookieDistance = 80;
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const prevLastCookiePosition = useRef();
+  // should initiate move animation if: lastCookie previous position is one less than lastCookie current position
+  useEffect(() => {
+    if(machineOn && lastCookiePosition < 2 ) {
+      if (prevLastCookiePosition.current !== undefined && lastCookiePosition === 0) {
+        setShouldAnimate(
+          true
+        );
+      }
+    } else {
+      setShouldAnimate(false);
+      prevLastCookiePosition.current = undefined;
+
+    }
+  
+    if(lastCookiePosition ===  0) {
+          //@ts-ignore
+      prevLastCookiePosition.current = lastCookiePosition;
+    }
+  }, [lastCookiePosition, machineOn, machinePaused]);
+
   const getCookieColor = (cookieIndex: number) => {
     const cookieDonePercentage = getCookieDonePercentageByIndex(cookieIndex);
 
@@ -69,6 +93,42 @@ const BiscuitMachine = ({
     const cookiePositionInOven = cookieIndex - ovenPosition + 2;
     return cookiePositionInOven / ovenLength;
   };
+
+const fallingDough: React.CSSProperties =
+  machineOn
+    ? {
+        animation: `dough-falling ${motorPulseDurationSeconds}s linear`,
+        animationIterationCount: "infinite",
+      }
+    : {};
+  const fallInBasketAnimation: React.CSSProperties = shouldAnimate
+  ? {
+      animation: `rotate-br ${motorPulseDurationSeconds}s linear`,
+      animationIterationCount: "infinite",
+      zIndex: 10,
+    }
+  : {};
+
+const slideRightAnimation: React.CSSProperties = shouldAnimate
+  ? {
+      animation: `slide-right ${motorPulseDurationSeconds}s`,
+      animationIterationCount: "infinite",
+    }
+  : {};
+const slideRightFirst: React.CSSProperties = shouldAnimate
+  ? {
+      animation: `slide-right-first ${motorPulseDurationSeconds}s`,
+      animationIterationCount: "infinite",
+    }
+  : {};
+const stampAnimation: React.CSSProperties = shouldAnimate
+  ? {
+      WebkitAnimation: `slide-top ${motorPulseDurationSeconds}s ease-in`,
+      animation: `slide-top ${motorPulseDurationSeconds}s ease-in`,
+      animationIterationCount: "infinite",
+      zIndex: -1,
+    }
+  : {};
   return (
     <>
       <div
@@ -139,7 +199,7 @@ const BiscuitMachine = ({
             <img
               src="./cookie-dough.png"
               alt="cookie"
-              style={{ position: "absolute", left: 40, bottom: 122 }}
+              style={{ position: "absolute", left: 40, bottom: 122, ...slideRightAnimation }}
             />
             <img
               src="./cookie-dough-falling.png"
@@ -155,47 +215,37 @@ const BiscuitMachine = ({
         ) : null}
 
         <>
-          {" "}
-          <div className="stamping-head"></div>
-          <div className="stamping-pipe"></div>
+         
+          <div className="stamping-head" style={{...stampAnimation}}></div>
+          <div className="stamping-pipe" style={{...stampAnimation}}></div>
         </>
 
-        {/* Cookies */}
+        {/* Cookies */} 
 
         {firstCookiePosition > -1
-          ? Array.from({ length: conveyorLength }).map((x, i) => {
+           ? 
+           Array.from({ length: conveyorLength - 1 }).map((x, i) => {
               return (
                 <>
-                  {lastCookiePosition < i + 2 && firstCookiePosition > i ? (
+               
                     <div
                       style={{
                         position: "absolute",
                         left: 45 + cookieDistance * (i + 1),
+                        opacity: lastCookiePosition < i + 2 && firstCookiePosition > i ? 1 : 0,
                         bottom: 109,
                         zIndex: -1,
+                        ...slideRightAnimation
                       }}
                     >
                       <Cookie style={{ width: 50, color: getCookieColor(i) }} />
                     </div>
-                  ) : null}
+                  
                 </>
               );
             })
           : null}
-        {firstCookiePosition === conveyorLength - 1 &&
-        lastCookiePosition > 0 &&
-        cookedCookiesAmount > 0 ? (
-          <img
-            src="./falling-cookie.png"
-            alt="falling-cookie"
-            style={{
-              position: "absolute",
-              left: cookieDistance * (conveyorLength - 1) + 120,
-              bottom: 80,
-              zIndex: 1,
-            }}
-          />
-        ) : null}
+   
         <div
           className="heating-agent"
           style={{

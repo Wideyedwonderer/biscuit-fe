@@ -36,6 +36,7 @@ function App() {
   const [conveyorLength, setConveyorLength] = useState(-1);
   const [ovenLength, setOvenLength] = useState(-1);
   const [ovenStartPosition, setOvenStartPosition] = useState(-1);
+  const [motorPulseDurationSeconds, setMotorPulseDurationSeconds] = useState(-1);
 
   useEffect(() => {
     subscribeToEvent("connect", () => {
@@ -71,10 +72,11 @@ function App() {
       setMachineOn(value);
     });
 
-    subscribeToEvent(BiscuitMachineEvents.INITIAL_CONFIG,({conveyorLength, ovenLength, ovenPosition}) => {
+    subscribeToEvent(BiscuitMachineEvents.INITIAL_CONFIG,({conveyorLength, ovenLength, ovenPosition, motorPulseDurationSeconds}) => {
       setConveyorLength(conveyorLength);
       setOvenLength(ovenLength);
       setOvenStartPosition(ovenPosition);
+      setMotorPulseDurationSeconds(motorPulseDurationSeconds)
     });
 
     subscribeToEvent(BiscuitMachineEvents.MACHINE_PAUSED, (value) => {
@@ -142,6 +144,7 @@ function App() {
           conveyorLength={conveyorLength}
           ovenLength={ovenLength}
           ovenPosition={ovenStartPosition}
+          motorPulseDurationSeconds={motorPulseDurationSeconds}
         />
       ) : (
         <CookieSpinner />
