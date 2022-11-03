@@ -1,0 +1,95 @@
+.machine-container {
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 560px;
+    height: 215px;
+
+}
+
+.stamping-head {
+  position: absolute;
+  width: 22px;
+  height: 5px;
+  z-index: 2;
+  border: 2px rgb(99, 98, 98) solid;
+  background-color: rgb(184, 181, 181);
+  bottom: 127px;
+  left: 137px;
+}
+
+.stamping-pipe {
+  position: absolute;
+  width: 4px;
+  height: 19px;
+  z-index: 2;
+  border: 2px rgb(99, 98, 98) solid;
+  background-color: rgb(184, 181, 181);
+  bottom: 134px;
+  left: 145px;
+}
+.heating-agent{
+  position: absolute;
+  height: 4px;
+  border: 1.5px grey solid;
+  bottom: 144px;
+}
+.oven-temperature {
+  position: absolute;
+  left: 292px;
+  bottom: 160px;
+  font-size: large;
+}
+.total-cookies {
+  position: absolute;
+  font-size: large;
+  bottom: 65px;
+  left: 570px;
+}
+
+@keyframes slide-top {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-19px);
+  }
+  88% {
+    transform: translateY(0);
+  }
+}
+@keyframes slide-right-first {
+  0% {
+    transform: translateX(0);
+    visibility: hidden;
+  }
+  50% {
+    transform: translateX(0);
+    visibility: hidden;
+
+  }
+  100% {
+    transform: translateX(81px);
+  }
+}
+@keyframes dough-falling {
+  0% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(15px);
+    background-color: #d79e39;
+    border-radius: 125%;
+    opacity: 1;
+  }
+  51% {
+    display: none;
+    opacity: 0;
+  }
+  100% {
+   opacity: 0;
+
+  }
+}
