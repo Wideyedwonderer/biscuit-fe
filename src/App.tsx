@@ -1,7 +1,7 @@
 import React, { useState, useEffect, MouseEventHandler } from "react";
 import io from "socket.io-client";
 import "./App.css";
-import BiscuitMachine from "./components/BiscuitMachine";
+import BiscuitMachine from "./BiscuitMachine";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import CookieSpinner from "./components/CookieSpinner";
@@ -24,8 +24,6 @@ const subscribeToEvent = <T extends BiscuitMachineEvents | 'connect' | 'disconne
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [ovenTemperature, setOvenTemperature] = useState(0);
-  const [ovenHeated, setOvenHeated] = useState(false);
-  const [motorOn, setMotorOn] = useState(false);
   const [machineOn, setMachineOn] = useState(false);
   const [machinePaused, setMachinePaused] = useState(false);
   const [cookedCookiesAmount, setCookedCookiesAmount] = useState(0);
@@ -53,16 +51,16 @@ function App() {
       )
     );
 
+    subscribeToEvent(BiscuitMachineEvents.ERROR, (value) => {
+      toastr.error(value);
+    });
+
+    subscribeToEvent(BiscuitMachineEvents.WARNING, (value) => {
+      toastr.warning(value);
+    });
+
     subscribeToEvent(BiscuitMachineEvents.OVEN_TEMPERATURE_CHANGE, (value) => {
       setOvenTemperature(value);
-    });
-
-    subscribeToEvent(BiscuitMachineEvents.OVEN_HEATED, (value) => {
-      setOvenHeated(value);
-    });
-
-    subscribeToEvent(BiscuitMachineEvents.MOTOR_ON, (value) => {
-      setMotorOn(value);
     });
 
     subscribeToEvent(BiscuitMachineEvents.MACHINE_ON, (value) => {
@@ -88,14 +86,6 @@ function App() {
 
     subscribeToEvent(BiscuitMachineEvents.COOKIE_COOKED, (value) => {
       setCookedCookiesAmount(value);
-    });
-
-    subscribeToEvent(BiscuitMachineEvents.ERROR, (value) => {
-      toastr.error(value);
-    });
-
-    subscribeToEvent(BiscuitMachineEvents.WARNING, (value) => {
-      toastr.warning(value);
     });
 
     subscribeToEvent(BiscuitMachineEvents.COOKIES_MOVED, (value) => {
@@ -129,8 +119,6 @@ function App() {
       {isConnected && conveyorLength > 0 ? (
         <BiscuitMachine
           ovenTemperature={ovenTemperature}
-          ovenHeated={ovenHeated}
-          motorOn={motorOn}
           machineOn={machineOn}
           machinePaused={machinePaused}
           cookedCookiesAmount={cookedCookiesAmount}
