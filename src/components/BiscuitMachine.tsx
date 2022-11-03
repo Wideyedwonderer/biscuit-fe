@@ -1,6 +1,7 @@
 import React, { MouseEventHandler } from "react";
 import { ReactComponent as Cookie } from "./cookie.svg";
 import "./BiscuitMachine.css";
+
 const BiscuitMachine = ({
   ovenTemperature,
   ovenHeated,
@@ -39,41 +40,48 @@ const BiscuitMachine = ({
   const cookieDistance = 80;
   const getCookieColor = (cookieIndex: number) => {
     const cookieDonePercentage = getCookieDonePercentageByIndex(cookieIndex);
-    console.log(cookieDonePercentage, cookieIndex)
 
-    if(cookieDonePercentage > 1) {
-      return 'black';
+    if (cookieDonePercentage > 1) {
+      return "black";
     }
 
-
-    const multiplier = 1 - (cookieDonePercentage * 0.39);
-    console.log(cookieDonePercentage, multiplier, cookieIndex)
-    return `rgb(${216 * multiplier}, ${159 * multiplier}, ${57 * multiplier})`
-  }
+    const multiplier = 1 - cookieDonePercentage * 0.39;
+    return `rgb(${216 * multiplier}, ${159 * multiplier}, ${57 * multiplier})`;
+  };
   const getCookieDonePercentageByIndex = (cookieIndex: number) => {
     const conveyorHasasBurnedCookies =
       firstBurnedCookiePosition !== -1 || lastBurnedCookiePosition !== -1;
     if (conveyorHasasBurnedCookies) {
-      const cookieIsBurned = cookieIndex + 1 <= firstBurnedCookiePosition && cookieIndex + 1 >= lastBurnedCookiePosition;
-      if(cookieIsBurned) {
+      const cookieIsBurned =
+        cookieIndex + 1 <= firstBurnedCookiePosition &&
+        cookieIndex + 1 >= lastBurnedCookiePosition;
+      if (cookieIsBurned) {
         return 2;
       }
     }
-    if(cookieIndex < ovenPosition - 2) {
+    if (cookieIndex < ovenPosition - 2) {
       return 0;
     }
-    // 7 4 5
-    if(cookieIndex >= ovenPosition + ovenLength - 3) {
+
+    if (cookieIndex >= ovenPosition + ovenLength - 3) {
       return 1;
     }
-    const cookiePositionInOven = cookieIndex - ovenPosition + 1;
-
+    const cookiePositionInOven = cookieIndex - ovenPosition + 2;
     return cookiePositionInOven / ovenLength;
   };
   return (
     <>
-      <div className="machine-container">
-        {/* Static */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: `${conveyorLength * cookieDistance + 200}px`,
+          height: "215px",
+          overflowX: "scroll",
+        }}
+      >
         <img
           src="./extruder-stamper.png"
           alt="cookie"
@@ -125,28 +133,35 @@ const BiscuitMachine = ({
             zIndex: -1,
           }}
         />
-        {/* Dynamic */}
+
         {lastCookiePosition < 1 && firstCookiePosition > -1 ? (
           <>
             <img
               src="./cookie-dough.png"
               alt="cookie"
-              style={{ position: "absolute", right: 480, bottom: 122 }}
+              style={{ position: "absolute", left: 40, bottom: 122 }}
             />
             <img
               src="./cookie-dough-falling.png"
               alt="cookie-dough-falling"
               style={{
                 position: "absolute",
-                right: 474,
+                left: 47,
                 bottom: 129,
                 zIndex: -1,
               }}
             />
           </>
         ) : null}
-        <div className="stamping-head"></div>
-        <div className="stamping-pipe"></div>
+
+        <>
+          {" "}
+          <div className="stamping-head"></div>
+          <div className="stamping-pipe"></div>
+        </>
+
+        {/* Cookies */}
+
         {firstCookiePosition > -1
           ? Array.from({ length: conveyorLength }).map((x, i) => {
               return (
@@ -155,7 +170,7 @@ const BiscuitMachine = ({
                     <div
                       style={{
                         position: "absolute",
-                        right: 386 - cookieDistance * i,
+                        left: 45 + cookieDistance * (i + 1),
                         bottom: 109,
                         zIndex: -1,
                       }}
@@ -167,7 +182,7 @@ const BiscuitMachine = ({
               );
             })
           : null}
-        {firstCookiePosition === 5 &&
+        {firstCookiePosition === conveyorLength - 1 &&
         lastCookiePosition > 0 &&
         cookedCookiesAmount > 0 ? (
           <img
@@ -184,14 +199,37 @@ const BiscuitMachine = ({
         <div
           className="heating-agent"
           style={{
-            backgroundColor: ovenHeated ? "red" : "rgb(184, 181, 181",
+            backgroundColor: "red",
+            filter: `brightness(${ovenTemperature / 2.4 + 50}%)`,
             width: cookieDistance * ovenLength - 45,
             left: cookieDistance * ovenPosition - 30,
+            position: "absolute",
+            height: "4px",
+            border: "1.5px grey solid",
+            bottom: "144px",
           }}
         ></div>
-        <div className="oven-temperature">{ovenTemperature}°</div>
+        <div
+          style={{
+            position: "absolute",
+            left: cookieDistance * ovenPosition - 40,
+            bottom: "160px",
+            fontSize: 18,
+          }}
+        >
+          {ovenTemperature}°
+        </div>
         {cookedCookiesAmount ? (
-          <div className="total-cookies">{cookedCookiesAmount}</div>
+          <div
+            style={{
+              position: "absolute",
+              fontSize: 18,
+              left: cookieDistance * conveyorLength + 95,
+              bottom: "65px",
+            }}
+          >
+            {cookedCookiesAmount}
+          </div>
         ) : null}
         <div className="btn-group">
           <button
